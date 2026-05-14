@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Toe Align</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F5F4F1;
+    --surface: #FFFFFF;
+    --surface2: #F0EEE9;
+    --border: #E2DED7;
+    --border-strong: #C8C3BA;
+    --text: #1A1814;
+    --text-2: #6B6560;
+    --text-3: #A09A93;
+    --accent: #1D4ED8;
+    --accent-light: #EFF3FF;
+    --success: #15803D;
+    --success-light: #F0FDF4;
+    --success-border: #BBF7D0;
+    --warn: #B45309;
+    --warn-light: #FFFBEB;
+    --warn-border: #FDE68A;
+    --danger: #B91C1C;
+    --danger-light: #FEF2F2;
+    --sans: 'DM Sans', sans-serif;
+    --mono: 'DM Mono', monospace;
+    --radius: 12px;
+    --radius-sm: 8px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    min-height: 100vh;
+    padding-bottom: 48px;
+  }
+
+  .app-header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 16px 20px 14px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+
+  .app-header-inner {
+    max-width: 480px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .app-name {
+    font-size: 1.05rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  .app-name span {
+    color: var(--text-3);
+    font-weight: 400;
+    font-size: 0.85rem;
+    margin-left: 6px;
+  }
+
+  .live-pill {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    padding: 5px 12px 5px 8px;
+    font-family: var(--mono);
+    font-size: 0.8rem;
+    color: var(--text-2);
+    transition: all 0.3s;
+  }
+
+  .live-pill.active {
+    background: var(--success-light);
+    border-color: var(--success-border);
+    color: var(--success);
+  }
+
+  .live-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--text-3);
+    flex-shrink: 0;
+    transition: background 0.3s;
+  }
+
+  .live-pill.active .live-dot {
+    background: var(--success);
+    animation: blink 2s infinite;
+  }
+
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  .page {
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 20px 16px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .step-label {
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--text-3);
+    padding: 0 4px;
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+
+  .card-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 13px 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .card-title {
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--text-2);
+  }
+
+  .chip {
+    font-size: 0.68rem;
+    font-weight: 500;
+    padding: 3px 9px;
+    border-radius: 100px;
+    background: var(--surface2);
+    color: var(--text-3);
+    border: 1px solid var(--border);
+  }
+
+  .chip.locked   { background: var(--accent-light); color: var(--accent); border-color: #BFDBFE; }
+  .chip.captured { background: var(--success-light); color: var(--success); border-color: var(--success-border); }
+  .chip.sampling { background: var(--warn-light); color: var(--warn); border-color: var(--warn-border); }
+
+  .reading-block {
+    padding: 18px 16px 14px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .reading-num {
+    font-family: var(--mono);
+    font-size: 2.8rem;
+    font-weight: 400;
+    letter-spacing: -0.03em;
+    color: var(--text);
+    line-height: 1;
+  }
+
+  .reading-num .unit {
+    font-size: 1.1rem;
+    color: var(--text-3);
+    margin-left: 2px;
+  }
+
+  .reading-num.empty { color: var(--text-3); font-size: 1.8rem; }
+
+  .reading-hint {
+    font-size: 0.73rem;
+    color: var(--text-3);
+    margin-top: 5px;
+    line-height: 1.4;
+  }
+
+  .progress-wrap {
+    display: none;
+    padding: 0 16px 12px;
+    gap: 10px;
+    align-items: center;
+  }
+  .progress-wrap.show { display: flex; }
+
+  .progress-track {
+    flex: 1;
+    height: 3px;
+    background: var(--surface2);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 4px;
+    width: 0%;
+    transition: width 0.08s linear;
+  }
+
+  .progress-label {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    color: var(--text-3);
+    min-width: 32px;
+    text-align: right;
+  }
+
+  .btn-wrap { padding: 12px 16px; }
+
+  .btn {
+    display: block;
+    width: 100%;
+    padding: 13px 16px;
+    border-radius: var(--radius-sm);
+    border: none;
+    font-family: var(--sans);
+    font-size: 0.88rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.12s;
+    text-align: center;
+  }
+
+  .btn:active { transform: scale(0.985); }
+  .btn:disabled { opacity: 0.35; cursor: not-allowed; transform: none; }
+
+  .btn-primary { background: var(--text); color: #fff; }
+  .btn-primary:not(:disabled):hover { background: #2d2a26; }
+
+  .btn-outline {
+    background: transparent;
+    color: var(--text);
+    border: 1.5px solid var(--border-strong);
+  }
+  .btn-outline:not(:disabled):hover { background: var(--surface2); }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--text-2);
+    border: 1px solid var(--border);
+    font-size: 0.82rem;
+    font-weight: 500;
+    padding: 10px 16px;
+  }
+  .btn-ghost:not(:disabled):hover { background: var(--surface2); }
+
+  .btn-row-2 {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 8px;
+  }
+
+  /* Results */
+  .result-hero {
+    padding: 24px 16px 20px;
+    text-align: center;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .result-eyebrow {
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--text-3);
+    margin-bottom: 10px;
+  }
+
+  .result-big {
+    font-family: var(--mono);
+    font-size: 3.6rem;
+    font-weight: 400;
+    letter-spacing: -0.04em;
+    line-height: 1;
+    margin-bottom: 12px;
+  }
+  .result-big.good { color: var(--success); }
+  .result-big.bad  { color: var(--danger); }
+  .result-big.warn { color: var(--warn); }
+
+  .result-verdict {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.82rem;
+    font-weight: 500;
+    padding: 6px 14px;
+    border-radius: 100px;
+  }
+  .result-verdict.good { background: var(--success-light); color: var(--success); border: 1px solid var(--success-border); }
+  .result-verdict.bad  { background: var(--danger-light);  color: var(--danger);  border: 1px solid #FECACA; }
+  .result-verdict.warn { background: var(--warn-light);    color: var(--warn);    border: 1px solid var(--warn-border); }
+
+  .spec-section {
+    padding: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .spec-labels {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    color: var(--text-3);
+    margin-bottom: 10px;
+  }
+
+  .spec-center-label { color: var(--success); font-weight: 500; }
+
+  .spec-track {
+    height: 8px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    position: relative;
+  }
+
+  .spec-zone {
+    position: absolute;
+    top: -1px;
+    height: calc(100% + 2px);
+    background: var(--success-light);
+    border: 1px solid var(--success-border);
+    border-radius: 100px;
+  }
+
+  .spec-center {
+    position: absolute;
+    top: 0; left: 50%;
+    transform: translateX(-50%);
+    width: 1px; height: 100%;
+    background: var(--border-strong);
+  }
+
+  .spec-needle {
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    background: var(--surface);
+    border: 2.5px solid var(--text);
+    box-shadow: 0 1px 4px rgba(0,0,0,0.12);
+    transition: left 0.4s cubic-bezier(0.34, 1.4, 0.64, 1);
+  }
+  .spec-needle.good { border-color: var(--success); }
+  .spec-needle.bad  { border-color: var(--danger); }
+  .spec-needle.warn { border-color: var(--warn); }
+
+  .breakdown-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 11px 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  .breakdown-row:last-child { border-bottom: none; }
+
+  .breakdown-label { font-size: 0.78rem; color: var(--text-2); }
+  .breakdown-val { font-family: var(--mono); font-size: 0.83rem; color: var(--text); font-weight: 500; }
+  .breakdown-val.good { color: var(--success); }
+  .breakdown-val.bad  { color: var(--danger); }
+
+  /* Permission screen */
+  #perm-screen {
+    position: fixed; inset: 0;
+    background: var(--bg);
+    z-index: 50;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 32px 24px;
+  }
+
+  .perm-icon {
+    width: 64px; height: 64px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  }
+
+  .perm-title {
+    font-size: 1.35rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    margin-bottom: 10px;
+  }
+
+  .perm-body {
+    font-size: 0.83rem;
+    color: var(--text-2);
+    text-align: center;
+    line-height: 1.65;
+    max-width: 280px;
+    margin-bottom: 32px;
+  }
+
+  .perm-btn {
+    width: 100%; max-width: 280px;
+    padding: 14px;
+    background: var(--text); color: #fff;
+    border: none;
+    border-radius: var(--radius-sm);
+    font-family: var(--sans);
+    font-size: 0.92rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-bottom: 12px;
+  }
+
+  .perm-note { font-size: 0.7rem; color: var(--text-3); text-align: center; }
+
+  .notice {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 13px 15px;
+    font-size: 0.75rem;
+    color: var(--text-2);
+    line-height: 1.65;
+  }
+  .notice strong { color: var(--text); font-weight: 500; }
+
+  .hidden { display: none !important; }
+</style>
+</head>
+<body>
+
+<div id="perm-screen">
+  <div class="perm-icon">🧭</div>
+  <div class="perm-title">Toe Align</div>
+  <p class="perm-body">Uses your iPhone's compass to measure wheel toe angles. Works best on a level surface away from metal tools and speakers.</p>
+  <button class="perm-btn" onclick="requestPermission()">Allow Compass Access</button>
+  <p class="perm-note">Requires iPhone · Safari · iOS 13+</p>
+</div>
+
+<header class="app-header">
+  <div class="app-header-inner">
+    <div class="app-name">Toe Align <span>Wheel Alignment</span></div>
+    <div class="live-pill" id="live-pill">
+      <div class="live-dot"></div>
+      <span id="live-heading">—°</span>
+    </div>
+  </div>
+</header>
+
+<div class="page">
+
+  <div class="step-label">Step 1 — Vehicle Reference</div>
+
+  <div class="card">
+    <div class="card-row">
+      <span class="card-title">Vehicle Heading</span>
+      <span class="chip" id="chip-vehicle">Not set</span>
+    </div>
+    <div class="reading-block">
+      <div class="reading-num empty" id="vehicle-num">Waiting</div>
+      <div class="reading-hint">Place phone on hood or roof aligned with the vehicle centerline</div>
+    </div>
+    <div class="progress-wrap" id="prog-vehicle">
+      <div class="progress-track"><div class="progress-fill" id="pfill-vehicle"></div></div>
+      <div class="progress-label" id="ppct-vehicle">0%</div>
+    </div>
+    <div class="btn-wrap">
+      <div class="btn-row-2">
+        <button class="btn btn-primary" id="btn-vehicle" onclick="startCapture('vehicle')">Lock Vehicle Heading</button>
+        <button class="btn btn-ghost hidden" id="btn-vehicle-reset" onclick="resetAll()">Reset</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="step-label">Step 2 — Wheel Measurements</div>
+
+  <div class="card">
+    <div class="card-row">
+      <span class="card-title">Left Wheel</span>
+      <span class="chip" id="chip-left">Waiting</span>
+    </div>
+    <div class="reading-block">
+      <div class="reading-num empty" id="left-num">—</div>
+      <div class="reading-hint">Place phone flat on left wheel face or rotor</div>
+    </div>
+    <div class="progress-wrap" id="prog-left">
+      <div class="progress-track"><div class="progress-fill" id="pfill-left"></div></div>
+      <div class="progress-label" id="ppct-left">0%</div>
+    </div>
+    <div class="btn-wrap">
+      <button class="btn btn-outline" id="btn-left" onclick="startCapture('left')" disabled>Capture Left Wheel</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-row">
+      <span class="card-title">Right Wheel</span>
+      <span class="chip" id="chip-right">Waiting</span>
+    </div>
+    <div class="reading-block">
+      <div class="reading-num empty" id="right-num">—</div>
+      <div class="reading-hint">Place phone flat on right wheel face or rotor</div>
+    </div>
+    <div class="progress-wrap" id="prog-right">
+      <div class="progress-track"><div class="progress-fill" id="pfill-right"></div></div>
+      <div class="progress-label" id="ppct-right">0%</div>
+    </div>
+    <div class="btn-wrap">
+      <button class="btn btn-outline" id="btn-right" onclick="startCapture('right')" disabled>Capture Right Wheel</button>
+    </div>
+  </div>
+
+  <div class="step-label hidden" id="step3-label">Step 3 — Results</div>
+
+  <div class="card hidden" id="result-card">
+    <div class="result-hero">
+      <div class="result-eyebrow">Total Toe Delta</div>
+      <div class="result-big" id="result-big">0.00°</div>
+      <div class="result-verdict" id="result-verdict">—</div>
+    </div>
+    <div class="spec-section">
+      <div class="spec-labels">
+        <span>−1.0°</span>
+        <span class="spec-center-label">✓ ±0.2° spec</span>
+        <span>+1.0°</span>
+      </div>
+      <div class="spec-track">
+        <div class="spec-center"></div>
+        <div class="spec-zone" id="spec-zone"></div>
+        <div class="spec-needle" id="spec-needle"></div>
+      </div>
+    </div>
+    <div class="breakdown-row">
+      <span class="breakdown-label">Vehicle reference</span>
+      <span class="breakdown-val" id="bd-vehicle">—</span>
+    </div>
+    <div class="breakdown-row">
+      <span class="breakdown-label">Left wheel</span>
+      <span class="breakdown-val" id="bd-left">—</span>
+    </div>
+    <div class="breakdown-row">
+      <span class="breakdown-label">Right wheel</span>
+      <span class="breakdown-val" id="bd-right">—</span>
+    </div>
+    <div class="breakdown-row">
+      <span class="breakdown-label">Left toe offset</span>
+      <span class="breakdown-val" id="bd-left-toe">—</span>
+    </div>
+    <div class="breakdown-row">
+      <span class="breakdown-label">Right toe offset</span>
+      <span class="breakdown-val" id="bd-right-toe">—</span>
+    </div>
+  </div>
+
+  <button class="btn btn-ghost" onclick="resetAll()">Reset All Measurements</button>
+
+  <div class="notice">
+    <strong>Tips for accuracy:</strong> Keep the phone away from speakers, motors, and loose metal. Magnetic interference from the vehicle is normal — the app uses relative differences, not absolute headings. Capture all three readings in the same session without moving the car.
+  </div>
+
+</div>
+
+<script>
+const SPEC = 0.20;
+const SAMPLES = 40;
+
+const st = { live: null, vehicle: null, left: null, right: null, locking: null, buf: [] };
+let hBuf = [];
+
+function requestPermission() {
+  if (typeof DeviceOrientationEvent !== 'undefined' &&
+      typeof DeviceOrientationEvent.requestPermission === 'function') {
+    DeviceOrientationEvent.requestPermission()
+      .then(r => {
+        if (r === 'granted') boot();
+        else alert('Compass access denied. Allow Motion & Orientation in Safari settings.');
+      }).catch(() => alert('Use Safari on iPhone to access the compass.'));
+  } else { boot(); }
+}
+
+function boot() {
+  document.getElementById('perm-screen').style.display = 'none';
+  window.addEventListener('deviceorientation', onOrient);
+  if ('ondeviceorientationabsolute' in window)
+    window.addEventListener('deviceorientationabsolute', onOrient);
+}
+
+function onOrient(e) {
+  let h = e.webkitCompassHeading ?? (e.alpha != null ? (360 - e.alpha) % 360 : null);
+  if (h === null) return;
+  hBuf.push(h);
+  if (hBuf.length > 4) hBuf.shift();
+  const s = circMean(hBuf);
+  st.live = s;
+
+  const pill = document.getElementById('live-pill');
+  pill.className = 'live-pill active';
+  document.getElementById('live-heading').textContent = s.toFixed(2) + '°';
+
+  if (st.locking) sample(s);
+}
+
+function circMean(arr) {
+  let sx = 0, cx = 0;
+  arr.forEach(a => { const r = a * Math.PI / 180; sx += Math.sin(r); cx += Math.cos(r); });
+  return ((Math.atan2(sx / arr.length, cx / arr.length) * 180 / Math.PI) + 360) % 360;
+}
+
+function angDelta(a, b) {
+  let d = a - b;
+  if (d > 180) d -= 360;
+  if (d < -180) d += 360;
+  return d;
+}
+
+function startCapture(slot) {
+  if (st.locking) return;
+  if (slot !== 'vehicle' && st.vehicle === null) { alert('Lock the vehicle heading first.'); return; }
+  st.locking = slot;
+  st.buf = [];
+  chip(slot, 'sampling', 'Sampling…');
+  lockBtns(true);
+  prog(slot, true);
+}
+
+function sample(h) {
+  st.buf.push(h);
+  const pct = Math.min(100, Math.round(st.buf.length / SAMPLES * 100));
+  const avg = circMean(st.buf);
+  numEl(st.locking).innerHTML = avg.toFixed(2) + '<span class="unit">°</span>';
+  numEl(st.locking).className = 'reading-num';
+  fillProg(st.locking, pct);
+  if (st.buf.length >= SAMPLES) finalize(st.locking, avg);
+}
+
+function finalize(slot, avg) {
+  st[slot] = avg;
+  st.locking = null;
+  prog(slot, false);
+  lockBtns(false);
+
+  if (slot === 'vehicle') {
+    chip('vehicle', 'locked', 'Locked');
+    document.getElementById('btn-vehicle').textContent = 'Re-lock Heading';
+    document.getElementById('btn-vehicle-reset').classList.remove('hidden');
+    document.getElementById('btn-left').disabled = false;
+    document.getElementById('btn-right').disabled = false;
+  } else {
+    chip(slot, 'captured', 'Captured');
+    document.getElementById(`btn-${slot}`).textContent =
+      slot === 'left' ? 'Re-capture Left' : 'Re-capture Right';
+  }
+
+  if (st.vehicle !== null && st.left !== null && st.right !== null) calcResults();
+}
+
+function calcResults() {
+  const v = st.vehicle, l = st.left, r = st.right;
+  const lt = angDelta(l, v);
+  const rt = -angDelta(r, v);
+  const total = lt + rt;
+  const abs = Math.abs(total);
+  const inSpec = abs <= SPEC;
+  const toein = total > 0;
+
+  document.getElementById('step3-label').classList.remove('hidden');
+  document.getElementById('result-card').classList.remove('hidden');
+
+  const bigEl = document.getElementById('result-big');
+  bigEl.textContent = (total >= 0 ? '+' : '') + total.toFixed(2) + '°';
+  bigEl.className = 'result-big ' + (inSpec ? 'good' : toein ? 'bad' : 'warn');
+
+  const vEl = document.getElementById('result-verdict');
+  if (inSpec) {
+    vEl.textContent = '✓ Within spec — no adjustment needed';
+    vEl.className = 'result-verdict good';
+  } else if (toein) {
+    vEl.textContent = `Toe-in ${abs.toFixed(2)}° — push wheels outward`;
+    vEl.className = 'result-verdict bad';
+  } else {
+    vEl.textContent = `Toe-out ${abs.toFixed(2)}° — pull wheels inward`;
+    vEl.className = 'result-verdict warn';
+  }
+
+  // Spec bar
+  const range = 1.0;
+  const clamped = Math.max(-range, Math.min(range, total));
+  const np = ((clamped + range) / (range * 2)) * 100;
+  const sp = (SPEC / range / 2) * 100;
+  const zone = document.getElementById('spec-zone');
+  zone.style.left = (50 - sp) + '%';
+  zone.style.width = (sp * 2) + '%';
+  const needle = document.getElementById('spec-needle');
+  needle.style.left = np + '%';
+  needle.className = 'spec-needle ' + (inSpec ? 'good' : toein ? 'bad' : 'warn');
+
+  document.getElementById('bd-vehicle').textContent = v.toFixed(2) + '°';
+  document.getElementById('bd-left').textContent = l.toFixed(2) + '°';
+  document.getElementById('bd-right').textContent = r.toFixed(2) + '°';
+
+  const fmtToe = (t) => ({
+    text: (t >= 0 ? '+' : '') + t.toFixed(2) + '°  ' + (Math.abs(t) <= SPEC / 2 ? 'ok' : t > 0 ? 'in' : 'out'),
+    cls: Math.abs(t) <= SPEC / 2 ? 'good' : 'bad'
+  });
+
+  const lf = fmtToe(lt), rf = fmtToe(rt);
+  const lte = document.getElementById('bd-left-toe');
+  lte.textContent = lf.text; lte.className = 'breakdown-val ' + lf.cls;
+  const rte = document.getElementById('bd-right-toe');
+  rte.textContent = rf.text; rte.className = 'breakdown-val ' + rf.cls;
+
+  setTimeout(() => document.getElementById('result-card')
+    .scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 150);
+}
+
+// ── Helpers ──
+function numEl(slot) {
+  return document.getElementById({ vehicle: 'vehicle-num', left: 'left-num', right: 'right-num' }[slot]);
+}
+
+function chip(slot, cls, text) {
+  const el = document.getElementById({ vehicle: 'chip-vehicle', left: 'chip-left', right: 'chip-right' }[slot]);
+  el.className = 'chip ' + cls;
+  el.textContent = text;
+}
+
+function prog(slot, show) {
+  const el = document.getElementById({ vehicle: 'prog-vehicle', left: 'prog-left', right: 'prog-right' }[slot]);
+  el.className = 'progress-wrap' + (show ? ' show' : '');
+}
+
+function fillProg(slot, pct) {
+  document.getElementById({ vehicle: 'pfill-vehicle', left: 'pfill-left', right: 'pfill-right' }[slot]).style.width = pct + '%';
+  document.getElementById({ vehicle: 'ppct-vehicle',  left: 'ppct-left',  right: 'ppct-right'  }[slot]).textContent = pct + '%';
+}
+
+function lockBtns(off) {
+  document.getElementById('btn-vehicle').disabled = off;
+  if (st.vehicle !== null) {
+    document.getElementById('btn-left').disabled = off;
+    document.getElementById('btn-right').disabled = off;
+  }
+}
+
+function resetAll() {
+  st.vehicle = st.left = st.right = st.locking = null;
+  st.buf = [];
+
+  ['vehicle','left','right'].forEach(s => {
+    chip(s, '', s === 'vehicle' ? 'Not set' : 'Waiting');
+    prog(s, false);
+    fillProg(s, 0);
+    const el = numEl(s);
+    el.innerHTML = s === 'vehicle' ? 'Waiting' : '—';
+    el.className = 'reading-num empty';
+  });
+
+  document.getElementById('btn-vehicle').textContent = 'Lock Vehicle Heading';
+  document.getElementById('btn-vehicle-reset').classList.add('hidden');
+  document.getElementById('btn-left').disabled = true;
+  document.getElementById('btn-right').disabled = true;
+  document.getElementById('btn-left').textContent = 'Capture Left Wheel';
+  document.getElementById('btn-right').textContent = 'Capture Right Wheel';
+  document.getElementById('result-card').classList.add('hidden');
+  document.getElementById('step3-label').classList.add('hidden');
+}
+
+setTimeout(() => {
+  if (st.live === null) document.getElementById('live-heading').textContent = 'No sensor';
+}, 3500);
+</script>
+</body>
+</html>
