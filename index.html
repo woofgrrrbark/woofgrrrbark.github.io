@@ -42,6 +42,7 @@
     padding-bottom: 48px;
   }
 
+  /* ── Header ── */
   .app-header {
     background: var(--surface);
     border-bottom: 1px solid var(--border);
@@ -50,7 +51,6 @@
     top: 0;
     z-index: 10;
   }
-
   .app-header-inner {
     max-width: 480px;
     margin: 0 auto;
@@ -58,395 +58,291 @@
     align-items: center;
     justify-content: space-between;
   }
-
-  .app-name {
-    font-size: 1.05rem;
-    font-weight: 600;
-    letter-spacing: -0.01em;
-  }
-
-  .app-name span {
-    color: var(--text-3);
-    font-weight: 400;
-    font-size: 0.85rem;
-    margin-left: 6px;
-  }
+  .app-name { font-size: 1.05rem; font-weight: 600; letter-spacing: -0.01em; }
+  .app-name span { color: var(--text-3); font-weight: 400; font-size: 0.85rem; margin-left: 6px; }
 
   .live-pill {
-    display: flex;
-    align-items: center;
-    gap: 7px;
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 100px;
-    padding: 5px 12px 5px 8px;
-    font-family: var(--mono);
-    font-size: 0.8rem;
-    color: var(--text-2);
+    display: flex; align-items: center; gap: 7px;
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 100px; padding: 5px 12px 5px 8px;
+    font-family: var(--mono); font-size: 0.8rem; color: var(--text-2);
     transition: all 0.3s;
   }
+  .live-pill.active { background: var(--success-light); border-color: var(--success-border); color: var(--success); }
+  .live-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--text-3); flex-shrink: 0; transition: background 0.3s; }
+  .live-pill.active .live-dot { background: var(--success); animation: blink 2s infinite; }
 
-  .live-pill.active {
-    background: var(--success-light);
-    border-color: var(--success-border);
-    color: var(--success);
-  }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.4} }
 
-  .live-dot {
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background: var(--text-3);
-    flex-shrink: 0;
-    transition: background 0.3s;
-  }
-
-  .live-pill.active .live-dot {
-    background: var(--success);
-    animation: blink 2s infinite;
-  }
-
-  @keyframes blink {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.4; }
-  }
-
+  /* ── Page ── */
   .page {
-    max-width: 480px;
-    margin: 0 auto;
+    max-width: 480px; margin: 0 auto;
     padding: 20px 16px 0;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
+    display: flex; flex-direction: column; gap: 12px;
   }
 
   .step-label {
-    font-size: 0.7rem;
-    font-weight: 500;
-    letter-spacing: 0.07em;
-    text-transform: uppercase;
-    color: var(--text-3);
-    padding: 0 4px;
+    font-size: 0.7rem; font-weight: 500;
+    letter-spacing: 0.07em; text-transform: uppercase;
+    color: var(--text-3); padding: 0 4px;
   }
 
-  .card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    overflow: hidden;
-  }
-
-  .card-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 13px 16px;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .card-title {
-    font-size: 0.8rem;
-    font-weight: 500;
-    color: var(--text-2);
-  }
+  /* ── Cards ── */
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+  .card-row { display: flex; align-items: center; justify-content: space-between; padding: 13px 16px; border-bottom: 1px solid var(--border); }
+  .card-title { font-size: 0.8rem; font-weight: 500; color: var(--text-2); }
 
   .chip {
-    font-size: 0.68rem;
-    font-weight: 500;
-    padding: 3px 9px;
-    border-radius: 100px;
-    background: var(--surface2);
-    color: var(--text-3);
-    border: 1px solid var(--border);
+    font-size: 0.68rem; font-weight: 500; padding: 3px 9px;
+    border-radius: 100px; background: var(--surface2);
+    color: var(--text-3); border: 1px solid var(--border);
   }
-
   .chip.locked   { background: var(--accent-light); color: var(--accent); border-color: #BFDBFE; }
   .chip.captured { background: var(--success-light); color: var(--success); border-color: var(--success-border); }
   .chip.sampling { background: var(--warn-light); color: var(--warn); border-color: var(--warn-border); }
+  .chip.level    { background: var(--success-light); color: var(--success); border-color: var(--success-border); }
+  .chip.unlevel  { background: var(--danger-light); color: var(--danger); border-color: #FECACA; }
 
-  .reading-block {
-    padding: 18px 16px 14px;
-    border-bottom: 1px solid var(--border);
+  /* ── Drivetrain selector ── */
+  .dt-grid {
+    display: grid; grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px; padding: 14px 16px;
+  }
+  .dt-btn {
+    padding: 10px 4px; border-radius: var(--radius-sm);
+    border: 1.5px solid var(--border); background: transparent;
+    font-family: var(--sans); font-size: 0.82rem; font-weight: 600;
+    color: var(--text-2); cursor: pointer; transition: all 0.12s;
+    text-align: center;
+  }
+  .dt-btn:active { transform: scale(0.97); }
+  .dt-btn.selected { border-color: var(--accent); background: var(--accent-light); color: var(--accent); }
+  .dt-note {
+    padding: 0 16px 14px;
+    font-size: 0.73rem; color: var(--text-3); line-height: 1.5;
+  }
+  .dt-note strong { color: var(--text-2); font-weight: 500; }
+
+  /* ── Bubble level ── */
+  .level-body { padding: 16px; border-bottom: 1px solid var(--border); }
+  .level-status-row {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 14px;
+  }
+  .level-readings {
+    display: flex; gap: 16px;
+    font-family: var(--mono); font-size: 0.78rem; color: var(--text-2);
+  }
+  .level-readings span { color: var(--text); font-weight: 500; }
+
+  /* Bubble level canvas area */
+  .level-visual {
+    display: flex; flex-direction: column; align-items: center; gap: 10px;
   }
 
-  .reading-num {
-    font-family: var(--mono);
-    font-size: 2.8rem;
-    font-weight: 400;
-    letter-spacing: -0.03em;
-    color: var(--text);
-    line-height: 1;
-  }
-
-  .reading-num .unit {
-    font-size: 1.1rem;
-    color: var(--text-3);
-    margin-left: 2px;
-  }
-
-  .reading-num.empty { color: var(--text-3); font-size: 1.8rem; }
-
-  .reading-hint {
-    font-size: 0.73rem;
-    color: var(--text-3);
-    margin-top: 5px;
-    line-height: 1.4;
-  }
-
-  .progress-wrap {
-    display: none;
-    padding: 0 16px 12px;
-    gap: 10px;
-    align-items: center;
-  }
-  .progress-wrap.show { display: flex; }
-
-  .progress-track {
-    flex: 1;
-    height: 3px;
+  /* 2-axis bubble plate */
+  .bubble-plate {
+    position: relative;
+    width: 140px; height: 140px;
+    border-radius: 50%;
     background: var(--surface2);
-    border-radius: 4px;
+    border: 1.5px solid var(--border-strong);
     overflow: hidden;
   }
-
-  .progress-fill {
-    height: 100%;
-    background: var(--accent);
-    border-radius: 4px;
-    width: 0%;
-    transition: width 0.08s linear;
+  /* target rings */
+  .bubble-plate::before {
+    content: '';
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%,-50%);
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    border: 1.5px solid var(--success-border);
+    background: rgba(187,247,208,0.25);
+    z-index: 1;
+  }
+  .bubble-plate::after {
+    content: '';
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%,-50%);
+    width: 1px; height: 100%;
+    background: var(--border);
+    z-index: 0;
+  }
+  .bubble-plate-vline {
+    position: absolute; top: 0; left: 50%;
+    transform: translateX(-50%);
+    width: 1px; height: 100%;
+    background: var(--border); z-index: 0;
+  }
+  .bubble-plate-hline {
+    position: absolute; left: 0; top: 50%;
+    transform: translateY(-50%);
+    height: 1px; width: 100%;
+    background: var(--border); z-index: 0;
+  }
+  .bubble {
+    position: absolute;
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, #60C4FF, #1D6FD8);
+    border: 2px solid rgba(255,255,255,0.5);
+    box-shadow: 0 2px 6px rgba(29,78,216,0.3);
+    transform: translate(-50%, -50%);
+    transition: left 0.1s ease-out, top 0.1s ease-out;
+    z-index: 2;
+    top: 50%; left: 50%;
+  }
+  .bubble.level-ok {
+    background: radial-gradient(circle at 35% 35%, #4ADE80, #15803D);
+    box-shadow: 0 2px 6px rgba(21,128,61,0.35);
+    border-color: rgba(255,255,255,0.6);
   }
 
-  .progress-label {
-    font-family: var(--mono);
-    font-size: 0.68rem;
-    color: var(--text-3);
-    min-width: 32px;
-    text-align: right;
+  .level-bars {
+    width: 100%; display: flex; flex-direction: column; gap: 6px;
   }
+  .level-bar-row { display: flex; align-items: center; gap: 8px; }
+  .level-bar-label { font-family: var(--mono); font-size: 0.65rem; color: var(--text-3); width: 28px; flex-shrink: 0; }
+  .level-bar-track {
+    flex: 1; height: 6px; background: var(--surface2);
+    border: 1px solid var(--border); border-radius: 100px; position: relative;
+  }
+  .level-bar-fill {
+    position: absolute; top: 0; height: 100%;
+    border-radius: 100px; background: var(--accent);
+    transition: left 0.1s, width 0.1s;
+  }
+  .level-bar-fill.ok { background: var(--success); }
+  .level-bar-center {
+    position: absolute; top: -2px; left: 50%;
+    transform: translateX(-50%);
+    width: 1px; height: calc(100% + 4px);
+    background: var(--border-strong);
+  }
+  .level-bar-val { font-family: var(--mono); font-size: 0.65rem; color: var(--text-3); width: 38px; text-align: right; flex-shrink: 0; }
 
+  /* ── Reading blocks ── */
+  .reading-block { padding: 18px 16px 14px; border-bottom: 1px solid var(--border); }
+  .reading-num { font-family: var(--mono); font-size: 2.8rem; font-weight: 400; letter-spacing: -0.03em; color: var(--text); line-height: 1; }
+  .reading-num .unit { font-size: 1.1rem; color: var(--text-3); margin-left: 2px; }
+  .reading-num.empty { color: var(--text-3); font-size: 1.8rem; }
+  .reading-hint { font-size: 0.73rem; color: var(--text-3); margin-top: 5px; line-height: 1.4; }
+
+  .progress-wrap { display: none; padding: 0 16px 12px; gap: 10px; align-items: center; }
+  .progress-wrap.show { display: flex; }
+  .progress-track { flex: 1; height: 3px; background: var(--surface2); border-radius: 4px; overflow: hidden; }
+  .progress-fill { height: 100%; background: var(--accent); border-radius: 4px; width: 0%; transition: width 0.08s linear; }
+  .progress-label { font-family: var(--mono); font-size: 0.68rem; color: var(--text-3); min-width: 32px; text-align: right; }
+
+  /* ── Buttons ── */
   .btn-wrap { padding: 12px 16px; }
-
   .btn {
-    display: block;
-    width: 100%;
-    padding: 13px 16px;
-    border-radius: var(--radius-sm);
-    border: none;
-    font-family: var(--sans);
-    font-size: 0.88rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.12s;
-    text-align: center;
+    display: block; width: 100%; padding: 13px 16px;
+    border-radius: var(--radius-sm); border: none;
+    font-family: var(--sans); font-size: 0.88rem; font-weight: 600;
+    cursor: pointer; transition: all 0.12s; text-align: center;
   }
-
   .btn:active { transform: scale(0.985); }
   .btn:disabled { opacity: 0.35; cursor: not-allowed; transform: none; }
-
   .btn-primary { background: var(--text); color: #fff; }
   .btn-primary:not(:disabled):hover { background: #2d2a26; }
-
-  .btn-outline {
-    background: transparent;
-    color: var(--text);
-    border: 1.5px solid var(--border-strong);
-  }
+  .btn-outline { background: transparent; color: var(--text); border: 1.5px solid var(--border-strong); }
   .btn-outline:not(:disabled):hover { background: var(--surface2); }
-
-  .btn-ghost {
-    background: transparent;
-    color: var(--text-2);
-    border: 1px solid var(--border);
-    font-size: 0.82rem;
-    font-weight: 500;
-    padding: 10px 16px;
-  }
+  .btn-ghost { background: transparent; color: var(--text-2); border: 1px solid var(--border); font-size: 0.82rem; font-weight: 500; padding: 10px 16px; }
   .btn-ghost:not(:disabled):hover { background: var(--surface2); }
+  .btn-row-2 { display: grid; grid-template-columns: 1fr auto; gap: 8px; }
 
-  .btn-row-2 {
-    display: grid;
-    grid-template-columns: 1fr auto;
-    gap: 8px;
-  }
-
-  /* Results */
-  .result-hero {
-    padding: 24px 16px 20px;
-    text-align: center;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .result-eyebrow {
-    font-size: 0.7rem;
-    font-weight: 500;
-    letter-spacing: 0.07em;
-    text-transform: uppercase;
-    color: var(--text-3);
-    margin-bottom: 10px;
-  }
-
-  .result-big {
-    font-family: var(--mono);
-    font-size: 3.6rem;
-    font-weight: 400;
-    letter-spacing: -0.04em;
-    line-height: 1;
-    margin-bottom: 12px;
-  }
+  /* ── Results ── */
+  .result-hero { padding: 24px 16px 20px; text-align: center; border-bottom: 1px solid var(--border); }
+  .result-eyebrow { font-size: 0.7rem; font-weight: 500; letter-spacing: 0.07em; text-transform: uppercase; color: var(--text-3); margin-bottom: 10px; }
+  .result-big { font-family: var(--mono); font-size: 3.6rem; font-weight: 400; letter-spacing: -0.04em; line-height: 1; margin-bottom: 12px; }
   .result-big.good { color: var(--success); }
   .result-big.bad  { color: var(--danger); }
   .result-big.warn { color: var(--warn); }
 
-  .result-verdict {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 0.82rem;
-    font-weight: 500;
-    padding: 6px 14px;
-    border-radius: 100px;
-  }
+  .result-verdict { display: inline-flex; align-items: center; gap: 6px; font-size: 0.82rem; font-weight: 500; padding: 6px 14px; border-radius: 100px; }
   .result-verdict.good { background: var(--success-light); color: var(--success); border: 1px solid var(--success-border); }
   .result-verdict.bad  { background: var(--danger-light);  color: var(--danger);  border: 1px solid #FECACA; }
   .result-verdict.warn { background: var(--warn-light);    color: var(--warn);    border: 1px solid var(--warn-border); }
 
-  .spec-section {
-    padding: 16px;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .spec-labels {
-    display: flex;
-    justify-content: space-between;
-    font-family: var(--mono);
-    font-size: 0.65rem;
-    color: var(--text-3);
-    margin-bottom: 10px;
-  }
-
+  .spec-section { padding: 16px; border-bottom: 1px solid var(--border); }
+  .spec-labels { display: flex; justify-content: space-between; font-family: var(--mono); font-size: 0.65rem; color: var(--text-3); margin-bottom: 10px; }
   .spec-center-label { color: var(--success); font-weight: 500; }
-
-  .spec-track {
-    height: 8px;
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 100px;
-    position: relative;
-  }
-
-  .spec-zone {
-    position: absolute;
-    top: -1px;
-    height: calc(100% + 2px);
-    background: var(--success-light);
-    border: 1px solid var(--success-border);
-    border-radius: 100px;
-  }
-
-  .spec-center {
-    position: absolute;
-    top: 0; left: 50%;
-    transform: translateX(-50%);
-    width: 1px; height: 100%;
-    background: var(--border-strong);
-  }
-
-  .spec-needle {
-    position: absolute;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    width: 16px; height: 16px;
-    border-radius: 50%;
-    background: var(--surface);
-    border: 2.5px solid var(--text);
-    box-shadow: 0 1px 4px rgba(0,0,0,0.12);
-    transition: left 0.4s cubic-bezier(0.34, 1.4, 0.64, 1);
-  }
+  .spec-track { height: 8px; background: var(--surface2); border: 1px solid var(--border); border-radius: 100px; position: relative; }
+  .spec-zone { position: absolute; top: -1px; height: calc(100% + 2px); background: var(--success-light); border: 1px solid var(--success-border); border-radius: 100px; }
+  .spec-center { position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 1px; height: 100%; background: var(--border-strong); }
+  .spec-needle { position: absolute; top: 50%; transform: translate(-50%,-50%); width: 16px; height: 16px; border-radius: 50%; background: var(--surface); border: 2.5px solid var(--text); box-shadow: 0 1px 4px rgba(0,0,0,0.12); transition: left 0.4s cubic-bezier(0.34,1.4,0.64,1); }
   .spec-needle.good { border-color: var(--success); }
   .spec-needle.bad  { border-color: var(--danger); }
   .spec-needle.warn { border-color: var(--warn); }
 
-  .breakdown-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 11px 16px;
-    border-bottom: 1px solid var(--border);
-  }
+  .breakdown-row { display: flex; align-items: center; justify-content: space-between; padding: 11px 16px; border-bottom: 1px solid var(--border); }
   .breakdown-row:last-child { border-bottom: none; }
-
   .breakdown-label { font-size: 0.78rem; color: var(--text-2); }
   .breakdown-val { font-family: var(--mono); font-size: 0.83rem; color: var(--text); font-weight: 500; }
   .breakdown-val.good { color: var(--success); }
   .breakdown-val.bad  { color: var(--danger); }
 
-  /* Permission screen */
+  /* ── Permission screen ── */
   #perm-screen {
-    position: fixed; inset: 0;
-    background: var(--bg);
-    z-index: 50;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 32px 24px;
+    position: fixed; inset: 0; background: var(--bg); z-index: 50;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 32px 24px;
   }
-
-  .perm-icon {
-    width: 64px; height: 64px;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 2rem;
-    margin-bottom: 20px;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
-  }
-
-  .perm-title {
-    font-size: 1.35rem;
-    font-weight: 600;
-    letter-spacing: -0.02em;
-    margin-bottom: 10px;
-  }
-
-  .perm-body {
-    font-size: 0.83rem;
-    color: var(--text-2);
-    text-align: center;
-    line-height: 1.65;
-    max-width: 280px;
-    margin-bottom: 32px;
-  }
-
-  .perm-btn {
-    width: 100%; max-width: 280px;
-    padding: 14px;
-    background: var(--text); color: #fff;
-    border: none;
-    border-radius: var(--radius-sm);
-    font-family: var(--sans);
-    font-size: 0.92rem;
-    font-weight: 600;
-    cursor: pointer;
-    margin-bottom: 12px;
-  }
-
+  .perm-icon { width: 64px; height: 64px; background: var(--surface); border: 1px solid var(--border); border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 2rem; margin-bottom: 20px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+  .perm-title { font-size: 1.35rem; font-weight: 600; letter-spacing: -0.02em; margin-bottom: 10px; }
+  .perm-body { font-size: 0.83rem; color: var(--text-2); text-align: center; line-height: 1.65; max-width: 280px; margin-bottom: 32px; }
+  .perm-btn { width: 100%; max-width: 280px; padding: 14px; background: var(--text); color: #fff; border: none; border-radius: var(--radius-sm); font-family: var(--sans); font-size: 0.92rem; font-weight: 600; cursor: pointer; margin-bottom: 12px; }
   .perm-note { font-size: 0.7rem; color: var(--text-3); text-align: center; }
 
-  .notice {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-sm);
-    padding: 13px 15px;
-    font-size: 0.75rem;
-    color: var(--text-2);
-    line-height: 1.65;
-  }
+  .notice { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 13px 15px; font-size: 0.75rem; color: var(--text-2); line-height: 1.65; }
   .notice strong { color: var(--text); font-weight: 500; }
+
+  /* ── Mini level (per-card) ── */
+  .mini-level-row {
+    display: flex; align-items: center; gap: 14px;
+    padding: 10px 16px 12px;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface2);
+  }
+  .mini-bubble-wrap { flex-shrink: 0; }
+  .mini-plate {
+    position: relative; width: 52px; height: 52px;
+    border-radius: 50%;
+    background: var(--surface); border: 1.5px solid var(--border-strong);
+    overflow: hidden;
+  }
+  .mini-vline { position: absolute; top:0; left:50%; transform:translateX(-50%); width:1px; height:100%; background:var(--border); }
+  .mini-hline { position: absolute; left:0; top:50%; transform:translateY(-50%); height:1px; width:100%; background:var(--border); }
+  .mini-zone {
+    position: absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+    width: 18px; height: 18px; border-radius: 50%;
+    border: 1px solid var(--success-border); background: rgba(187,247,208,0.3);
+  }
+  .mini-bubble {
+    position: absolute; width: 14px; height: 14px; border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, #60C4FF, #1D6FD8);
+    border: 1.5px solid rgba(255,255,255,0.6);
+    box-shadow: 0 1px 4px rgba(29,78,216,0.25);
+    transform: translate(-50%,-50%);
+    transition: left 0.1s ease-out, top 0.1s ease-out;
+    top: 50%; left: 50%; z-index: 2;
+  }
+  .mini-bubble.ok {
+    background: radial-gradient(circle at 35% 35%, #4ADE80, #15803D);
+    box-shadow: 0 1px 4px rgba(21,128,61,0.3);
+  }
+  .mini-level-info { flex: 1; min-width: 0; }
+  .mini-level-vals {
+    display: flex; gap: 12px;
+    font-family: var(--mono); font-size: 0.68rem; color: var(--text-3);
+    margin-bottom: 4px;
+  }
+  .mini-level-vals strong { color: var(--text); font-weight: 500; }
+  .mini-level-status {
+    font-size: 0.72rem; font-weight: 500; color: var(--text-3);
+  }
+  .mini-level-status.ok  { color: var(--success); }
+  .mini-level-status.bad { color: var(--danger); }
 
   .hidden { display: none !important; }
 </style>
@@ -456,9 +352,9 @@
 <div id="perm-screen">
   <div class="perm-icon">🧭</div>
   <div class="perm-title">Toe Align</div>
-  <p class="perm-body">Uses your iPhone's compass to measure wheel toe angles. Works best on a level surface away from metal tools and speakers.</p>
+  <p class="perm-body">Uses your iPhone's compass and accelerometer to measure wheel toe angles. Works best on a level surface away from metal tools.</p>
   <button class="perm-btn" onclick="requestPermission()">Allow Compass Access</button>
-  <p class="perm-note">Requires iPhone · Safari · iOS 13+</p>
+  <p class="perm-note">Requires iPhone · Chrome recommended · iOS 13+</p>
 </div>
 
 <header class="app-header">
@@ -473,8 +369,64 @@
 
 <div class="page">
 
-  <div class="step-label">Step 1 — Vehicle Reference</div>
+  <!-- ── Setup ── -->
+  <div class="step-label">Setup — Drivetrain</div>
+  <div class="card">
+    <div class="card-row">
+      <span class="card-title">Drivetrain Type</span>
+      <span class="chip" id="chip-dt">Not set</span>
+    </div>
+    <div class="dt-grid">
+      <button class="dt-btn" id="dt-fwd" onclick="selectDT('fwd')">FWD</button>
+      <button class="dt-btn" id="dt-rwd" onclick="selectDT('rwd')">RWD</button>
+      <button class="dt-btn" id="dt-awd" onclick="selectDT('awd')">AWD</button>
+    </div>
+    <div class="dt-note" id="dt-note">Select your drivetrain to get axle-specific guidance.</div>
+  </div>
 
+  <!-- ── Level ── -->
+  <div class="step-label">Setup — Surface Level</div>
+  <div class="card">
+    <div class="card-row">
+      <span class="card-title">Surface Level</span>
+      <span class="chip" id="chip-level">Checking…</span>
+    </div>
+    <div class="level-body">
+      <div class="level-status-row">
+        <div class="level-readings">
+          Pitch: <span id="lv-pitch">0.0°</span>&nbsp;&nbsp;Roll: <span id="lv-roll">0.0°</span>
+        </div>
+      </div>
+      <div class="level-visual">
+        <div class="bubble-plate">
+          <div class="bubble-plate-vline"></div>
+          <div class="bubble-plate-hline"></div>
+          <div class="bubble" id="bubble"></div>
+        </div>
+        <div class="level-bars" style="margin-top:10px">
+          <div class="level-bar-row">
+            <div class="level-bar-label">F/B</div>
+            <div class="level-bar-track">
+              <div class="level-bar-center"></div>
+              <div class="level-bar-fill" id="lbar-pitch"></div>
+            </div>
+            <div class="level-bar-val" id="lval-pitch">0.0°</div>
+          </div>
+          <div class="level-bar-row">
+            <div class="level-bar-label">L/R</div>
+            <div class="level-bar-track">
+              <div class="level-bar-center"></div>
+              <div class="level-bar-fill" id="lbar-roll"></div>
+            </div>
+            <div class="level-bar-val" id="lval-roll">0.0°</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Step 1 ── -->
+  <div class="step-label">Step 1 — Vehicle Reference</div>
   <div class="card">
     <div class="card-row">
       <span class="card-title">Vehicle Heading</span>
@@ -483,6 +435,22 @@
     <div class="reading-block">
       <div class="reading-num empty" id="vehicle-num">Waiting</div>
       <div class="reading-hint">Place phone on hood or roof aligned with the vehicle centerline</div>
+    </div>
+    <div class="mini-level-row" id="mlevel-vehicle">
+      <div class="mini-bubble-wrap">
+        <div class="mini-plate">
+          <div class="mini-vline"></div><div class="mini-hline"></div>
+          <div class="mini-zone"></div>
+          <div class="mini-bubble" id="mb-vehicle"></div>
+        </div>
+      </div>
+      <div class="mini-level-info">
+        <div class="mini-level-vals">
+          <span>Pitch <strong id="ml-pitch-vehicle">—</strong></span>
+          <span>Roll <strong id="ml-roll-vehicle">—</strong></span>
+        </div>
+        <div class="mini-level-status" id="mls-vehicle">Place phone to check level</div>
+      </div>
     </div>
     <div class="progress-wrap" id="prog-vehicle">
       <div class="progress-track"><div class="progress-fill" id="pfill-vehicle"></div></div>
@@ -496,7 +464,8 @@
     </div>
   </div>
 
-  <div class="step-label">Step 2 — Wheel Measurements</div>
+  <!-- ── Step 2 ── -->
+  <div class="step-label" id="step2-label">Step 2 — Wheel Measurements</div>
 
   <div class="card">
     <div class="card-row">
@@ -505,7 +474,23 @@
     </div>
     <div class="reading-block">
       <div class="reading-num empty" id="left-num">—</div>
-      <div class="reading-hint">Place phone flat on left wheel face or rotor</div>
+      <div class="reading-hint" id="hint-left">Place phone flat on left wheel face or rotor</div>
+    </div>
+    <div class="mini-level-row" id="mlevel-left">
+      <div class="mini-bubble-wrap">
+        <div class="mini-plate">
+          <div class="mini-vline"></div><div class="mini-hline"></div>
+          <div class="mini-zone"></div>
+          <div class="mini-bubble" id="mb-left"></div>
+        </div>
+      </div>
+      <div class="mini-level-info">
+        <div class="mini-level-vals">
+          <span>Pitch <strong id="ml-pitch-left">—</strong></span>
+          <span>Roll <strong id="ml-roll-left">—</strong></span>
+        </div>
+        <div class="mini-level-status" id="mls-left">Place phone to check level</div>
+      </div>
     </div>
     <div class="progress-wrap" id="prog-left">
       <div class="progress-track"><div class="progress-fill" id="pfill-left"></div></div>
@@ -523,7 +508,23 @@
     </div>
     <div class="reading-block">
       <div class="reading-num empty" id="right-num">—</div>
-      <div class="reading-hint">Place phone flat on right wheel face or rotor</div>
+      <div class="reading-hint" id="hint-right">Place phone flat on right wheel face or rotor</div>
+    </div>
+    <div class="mini-level-row" id="mlevel-right">
+      <div class="mini-bubble-wrap">
+        <div class="mini-plate">
+          <div class="mini-vline"></div><div class="mini-hline"></div>
+          <div class="mini-zone"></div>
+          <div class="mini-bubble" id="mb-right"></div>
+        </div>
+      </div>
+      <div class="mini-level-info">
+        <div class="mini-level-vals">
+          <span>Pitch <strong id="ml-pitch-right">—</strong></span>
+          <span>Roll <strong id="ml-roll-right">—</strong></span>
+        </div>
+        <div class="mini-level-status" id="mls-right">Place phone to check level</div>
+      </div>
     </div>
     <div class="progress-wrap" id="prog-right">
       <div class="progress-track"><div class="progress-fill" id="pfill-right"></div></div>
@@ -534,45 +535,74 @@
     </div>
   </div>
 
+  <!-- Results -->
   <div class="step-label hidden" id="step3-label">Step 3 — Results</div>
 
   <div class="card hidden" id="result-card">
     <div class="result-hero">
-      <div class="result-eyebrow">Total Toe Delta</div>
-      <div class="result-big" id="result-big">0.00°</div>
+      <div class="result-eyebrow">Overall Status</div>
+      <div class="result-big" id="result-big">—</div>
       <div class="result-verdict" id="result-verdict">—</div>
-    </div>
-    <div class="spec-section">
-      <div class="spec-labels">
-        <span>−1.0°</span>
-        <span class="spec-center-label">✓ ±0.2° spec</span>
-        <span>+1.0°</span>
-      </div>
-      <div class="spec-track">
-        <div class="spec-center"></div>
-        <div class="spec-zone" id="spec-zone"></div>
-        <div class="spec-needle" id="spec-needle"></div>
-      </div>
     </div>
     <div class="breakdown-row">
       <span class="breakdown-label">Vehicle reference</span>
       <span class="breakdown-val" id="bd-vehicle">—</span>
     </div>
     <div class="breakdown-row">
-      <span class="breakdown-label">Left wheel</span>
+      <span class="breakdown-label">Left wheel reading</span>
       <span class="breakdown-val" id="bd-left">—</span>
     </div>
     <div class="breakdown-row">
-      <span class="breakdown-label">Right wheel</span>
+      <span class="breakdown-label">Right wheel reading</span>
       <span class="breakdown-val" id="bd-right">—</span>
     </div>
-    <div class="breakdown-row">
-      <span class="breakdown-label">Left toe offset</span>
-      <span class="breakdown-val" id="bd-left-toe">—</span>
+  </div>
+
+  <div class="card hidden" id="result-left-card">
+    <div class="card-row">
+      <span class="card-title">Left Wheel Adjustment</span>
+      <span class="chip" id="chip-result-left">—</span>
     </div>
-    <div class="breakdown-row">
-      <span class="breakdown-label">Right toe offset</span>
-      <span class="breakdown-val" id="bd-right-toe">—</span>
+    <div class="result-hero" style="padding:16px 16px 14px">
+      <div class="result-eyebrow">Toe offset</div>
+      <div class="result-big" id="result-left-big" style="font-size:2.8rem">—</div>
+      <div class="result-verdict" id="result-left-verdict">—</div>
+    </div>
+    <div class="spec-section">
+      <div class="spec-labels">
+        <span>-1.0 deg</span>
+        <span class="spec-center-label">+/- 0.1 deg per wheel</span>
+        <span>+1.0 deg</span>
+      </div>
+      <div class="spec-track">
+        <div class="spec-center"></div>
+        <div class="spec-zone" id="spec-zone-left"></div>
+        <div class="spec-needle" id="spec-needle-left"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card hidden" id="result-right-card">
+    <div class="card-row">
+      <span class="card-title">Right Wheel Adjustment</span>
+      <span class="chip" id="chip-result-right">—</span>
+    </div>
+    <div class="result-hero" style="padding:16px 16px 14px">
+      <div class="result-eyebrow">Toe offset</div>
+      <div class="result-big" id="result-right-big" style="font-size:2.8rem">—</div>
+      <div class="result-verdict" id="result-right-verdict">—</div>
+    </div>
+    <div class="spec-section">
+      <div class="spec-labels">
+        <span>-1.0 deg</span>
+        <span class="spec-center-label">+/- 0.1 deg per wheel</span>
+        <span>+1.0 deg</span>
+      </div>
+      <div class="spec-track">
+        <div class="spec-center"></div>
+        <div class="spec-zone" id="spec-zone-right"></div>
+        <div class="spec-needle" id="spec-needle-right"></div>
+      </div>
     </div>
   </div>
 
@@ -587,10 +617,39 @@
 <script>
 const SPEC = 0.20;
 const SAMPLES = 40;
+const LEVEL_THRESH = 1.5; // degrees before warning
 
-const st = { live: null, vehicle: null, left: null, right: null, locking: null, buf: [] };
+const st = {
+  live: null, vehicle: null, left: null, right: null,
+  locking: null, buf: [], dt: null,
+  pitch: 0, roll: 0
+};
 let hBuf = [];
 
+// ── Drivetrain ──
+const DT_INFO = {
+  fwd: { label: 'Front-Wheel Drive', note: '<strong>FWD:</strong> Toe is adjusted at the front axle only. Rear toe is typically fixed. Focus your measurements on the front wheels.' },
+  rwd: { label: 'Rear-Wheel Drive',  note: '<strong>RWD:</strong> Toe is adjusted at the rear axle. Some RWD vehicles also have adjustable front toe — check your service manual.' },
+  awd: { label: 'All-Wheel Drive',   note: '<strong>AWD:</strong> Both axles may need adjustment. Measure front and rear separately. Start with rear, then set front to match.' },
+};
+
+function selectDT(type) {
+  st.dt = type;
+  ['fwd','rwd','awd'].forEach(t => {
+    document.getElementById(`dt-${t}`).className = 'dt-btn' + (t === type ? ' selected' : '');
+  });
+  const info = DT_INFO[type];
+  document.getElementById('chip-dt').className = 'chip captured';
+  document.getElementById('chip-dt').textContent = info.label;
+  document.getElementById('dt-note').innerHTML = info.note;
+
+  // Update wheel hints
+  const axle = type === 'rwd' ? 'rear' : 'front';
+  document.getElementById('hint-left').textContent  = `Place phone flat on left ${axle} wheel face or rotor`;
+  document.getElementById('hint-right').textContent = `Place phone flat on right ${axle} wheel face or rotor`;
+}
+
+// ── Permission ──
 function requestPermission() {
   if (typeof DeviceOrientationEvent !== 'undefined' &&
       typeof DeviceOrientationEvent.requestPermission === 'function') {
@@ -609,21 +668,106 @@ function boot() {
     window.addEventListener('deviceorientationabsolute', onOrient);
 }
 
+// ── Orientation handler ──
 function onOrient(e) {
+  // Compass heading
   let h = e.webkitCompassHeading ?? (e.alpha != null ? (360 - e.alpha) % 360 : null);
-  if (h === null) return;
-  hBuf.push(h);
-  if (hBuf.length > 4) hBuf.shift();
-  const s = circMean(hBuf);
-  st.live = s;
+  if (h !== null) {
+    hBuf.push(h);
+    if (hBuf.length > 4) hBuf.shift();
+    const s = circMean(hBuf);
+    st.live = s;
+    document.getElementById('live-pill').className = 'live-pill active';
+    document.getElementById('live-heading').textContent = s.toFixed(2) + '°';
+    if (st.locking) sample(s);
+  }
 
-  const pill = document.getElementById('live-pill');
-  pill.className = 'live-pill active';
-  document.getElementById('live-heading').textContent = s.toFixed(2) + '°';
-
-  if (st.locking) sample(s);
+  // Accelerometer → level (beta = pitch, gamma = roll)
+  if (e.beta !== null && e.gamma !== null) {
+    // Smooth a tiny bit
+    st.pitch = st.pitch * 0.7 + e.beta  * 0.3;
+    st.roll  = st.roll  * 0.7 + e.gamma * 0.3;
+    updateLevel(st.pitch, st.roll);
+  }
 }
 
+// ── Level display ──
+function updateLevel(pitch, roll) {
+  const p = parseFloat(pitch.toFixed(1));
+  const r = parseFloat(roll.toFixed(1));
+  const maxRange = 10; // degrees for full bar travel
+
+  document.getElementById('lv-pitch').textContent = (p >= 0 ? '+' : '') + p.toFixed(1) + '°';
+  document.getElementById('lv-roll').textContent  = (r >= 0 ? '+' : '') + r.toFixed(1) + '°';
+  document.getElementById('lval-pitch').textContent = (p >= 0 ? '+' : '') + p.toFixed(1) + '°';
+  document.getElementById('lval-roll').textContent  = (r >= 0 ? '+' : '') + r.toFixed(1) + '°';
+
+  // Bubble position: clamp to ±maxRange, map to 0–100% of 140px plate
+  const bx = Math.max(-maxRange, Math.min(maxRange, r));
+  const by = Math.max(-maxRange, Math.min(maxRange, p));
+  const bxPct = 50 + (bx / maxRange) * 40; // ±40% travel
+  const byPct = 50 + (by / maxRange) * 40;
+  const bubble = document.getElementById('bubble');
+  bubble.style.left = bxPct + '%';
+  bubble.style.top  = byPct + '%';
+
+  const isLevel = Math.abs(p) < LEVEL_THRESH && Math.abs(r) < LEVEL_THRESH;
+  bubble.className = 'bubble' + (isLevel ? ' level-ok' : '');
+
+  const chip = document.getElementById('chip-level');
+  chip.className = 'chip ' + (isLevel ? 'level' : 'unlevel');
+  chip.textContent = isLevel ? 'Level ✓' : 'Not level';
+
+  // Side bars
+  updateLevelBar('pitch', p, maxRange, isLevel);
+  updateLevelBar('roll',  r, maxRange, isLevel);
+
+  // Mini levels on each card
+  updateMiniLevel('vehicle', p, r, isLevel);
+  updateMiniLevel('left',    p, r, isLevel);
+  updateMiniLevel('right',   p, r, isLevel);
+}
+
+function updateMiniLevel(slot, pitch, roll, isLevel) {
+  const range = 10;
+  const bx = Math.max(-range, Math.min(range, roll));
+  const by = Math.max(-range, Math.min(range, pitch));
+  const bxPct = 50 + (bx / range) * 38;
+  const byPct = 50 + (by / range) * 38;
+
+  const mb = document.getElementById(`mb-${slot}`);
+  mb.style.left = bxPct + '%';
+  mb.style.top  = byPct + '%';
+  mb.className  = 'mini-bubble' + (isLevel ? ' ok' : '');
+
+  document.getElementById(`ml-pitch-${slot}`).textContent = (pitch >= 0 ? '+' : '') + pitch.toFixed(1) + '°';
+  document.getElementById(`ml-roll-${slot}`).textContent  = (roll  >= 0 ? '+' : '') + roll.toFixed(1)  + '°';
+
+  const statusEl = document.getElementById(`mls-${slot}`);
+  if (isLevel) {
+    statusEl.textContent = '✓ Level — ready to capture';
+    statusEl.className   = 'mini-level-status ok';
+  } else {
+    const worst = Math.max(Math.abs(pitch), Math.abs(roll)).toFixed(1);
+    statusEl.textContent = `Not level (${worst}° off) — adjust phone`;
+    statusEl.className   = 'mini-level-status bad';
+  }
+}
+
+function updateLevelBar(axis, val, max, isLevel) {
+  const pct = Math.min(100, Math.abs(val) / max * 50); // half-bar width
+  const fill = document.getElementById(`lbar-${axis}`);
+  fill.className = 'level-bar-fill' + (isLevel ? ' ok' : '');
+  if (val >= 0) {
+    fill.style.left  = '50%';
+    fill.style.width = pct + '%';
+  } else {
+    fill.style.left  = (50 - pct) + '%';
+    fill.style.width = pct + '%';
+  }
+}
+
+// ── Compass math ──
 function circMean(arr) {
   let sx = 0, cx = 0;
   arr.forEach(a => { const r = a * Math.PI / 180; sx += Math.sin(r); cx += Math.cos(r); });
@@ -637,6 +781,7 @@ function angDelta(a, b) {
   return d;
 }
 
+// ── Capture flow ──
 function startCapture(slot) {
   if (st.locking) return;
   if (slot !== 'vehicle' && st.vehicle === null) { alert('Lock the vehicle heading first.'); return; }
@@ -678,86 +823,109 @@ function finalize(slot, avg) {
   if (st.vehicle !== null && st.left !== null && st.right !== null) calcResults();
 }
 
+// ── Results ──
+const WHEEL_SPEC = 0.10; // per-wheel half of total 0.2 spec
+
 function calcResults() {
   const v = st.vehicle, l = st.left, r = st.right;
   const lt = angDelta(l, v);
   const rt = -angDelta(r, v);
   const total = lt + rt;
-  const abs = Math.abs(total);
-  const inSpec = abs <= SPEC;
-  const toein = total > 0;
+  const bothOk = Math.abs(lt) <= WHEEL_SPEC && Math.abs(rt) <= WHEEL_SPEC;
 
+  // Show all result cards
   document.getElementById('step3-label').classList.remove('hidden');
   document.getElementById('result-card').classList.remove('hidden');
+  document.getElementById('result-left-card').classList.remove('hidden');
+  document.getElementById('result-right-card').classList.remove('hidden');
 
+  // ── Summary card ──
   const bigEl = document.getElementById('result-big');
-  bigEl.textContent = (total >= 0 ? '+' : '') + total.toFixed(2) + '°';
-  bigEl.className = 'result-big ' + (inSpec ? 'good' : toein ? 'bad' : 'warn');
+  bigEl.textContent = bothOk ? 'In Spec' : 'Needs Adjustment';
+  bigEl.className = 'result-big ' + (bothOk ? 'good' : 'bad');
+  bigEl.style.fontSize = '2rem';
 
   const vEl = document.getElementById('result-verdict');
-  if (inSpec) {
-    vEl.textContent = '✓ Within spec — no adjustment needed';
+  if (bothOk) {
+    vEl.textContent = '✓ Both wheels within spec';
     vEl.className = 'result-verdict good';
-  } else if (toein) {
-    vEl.textContent = `Toe-in ${abs.toFixed(2)}° — push wheels outward`;
-    vEl.className = 'result-verdict bad';
   } else {
-    vEl.textContent = `Toe-out ${abs.toFixed(2)}° — pull wheels inward`;
-    vEl.className = 'result-verdict warn';
+    const count = [Math.abs(lt) > WHEEL_SPEC, Math.abs(rt) > WHEEL_SPEC].filter(Boolean).length;
+    vEl.textContent = `${count === 2 ? 'Both wheels' : '1 wheel'} need${count === 1 ? 's' : ''} adjustment`;
+    vEl.className = 'result-verdict bad';
   }
-
-  // Spec bar
-  const range = 1.0;
-  const clamped = Math.max(-range, Math.min(range, total));
-  const np = ((clamped + range) / (range * 2)) * 100;
-  const sp = (SPEC / range / 2) * 100;
-  const zone = document.getElementById('spec-zone');
-  zone.style.left = (50 - sp) + '%';
-  zone.style.width = (sp * 2) + '%';
-  const needle = document.getElementById('spec-needle');
-  needle.style.left = np + '%';
-  needle.className = 'spec-needle ' + (inSpec ? 'good' : toein ? 'bad' : 'warn');
 
   document.getElementById('bd-vehicle').textContent = v.toFixed(2) + '°';
   document.getElementById('bd-left').textContent = l.toFixed(2) + '°';
   document.getElementById('bd-right').textContent = r.toFixed(2) + '°';
 
-  const fmtToe = (t) => ({
-    text: (t >= 0 ? '+' : '') + t.toFixed(2) + '°  ' + (Math.abs(t) <= SPEC / 2 ? 'ok' : t > 0 ? 'in' : 'out'),
-    cls: Math.abs(t) <= SPEC / 2 ? 'good' : 'bad'
-  });
-
-  const lf = fmtToe(lt), rf = fmtToe(rt);
-  const lte = document.getElementById('bd-left-toe');
-  lte.textContent = lf.text; lte.className = 'breakdown-val ' + lf.cls;
-  const rte = document.getElementById('bd-right-toe');
-  rte.textContent = rf.text; rte.className = 'breakdown-val ' + rf.cls;
+  // ── Per-wheel cards ──
+  renderWheelCard('left',  lt);
+  renderWheelCard('right', rt);
 
   setTimeout(() => document.getElementById('result-card')
     .scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 150);
+}
+
+function renderWheelCard(side, toe) {
+  const abs = Math.abs(toe);
+  const inSpec = abs <= WHEEL_SPEC;
+  const toein = toe > 0;
+  const range = 1.0;
+
+  // Big number
+  const bigEl = document.getElementById(`result-${side}-big`);
+  bigEl.textContent = (toe >= 0 ? '+' : '') + toe.toFixed(2) + '°';
+  bigEl.className = 'result-big ' + (inSpec ? 'good' : toein ? 'bad' : 'warn');
+
+  // Verdict + chip
+  const vEl = document.getElementById(`result-${side}-verdict`);
+  const chipEl = document.getElementById(`chip-result-${side}`);
+  if (inSpec) {
+    vEl.textContent = '✓ No adjustment needed';
+    vEl.className = 'result-verdict good';
+    chipEl.textContent = 'OK';
+    chipEl.className = 'chip captured';
+  } else if (toein) {
+    vEl.textContent = `Toe-in ${abs.toFixed(2)}° — push wheel out`;
+    vEl.className = 'result-verdict bad';
+    chipEl.textContent = 'Toe-in';
+    chipEl.className = 'chip unlevel';
+  } else {
+    vEl.textContent = `Toe-out ${abs.toFixed(2)}° — pull wheel in`;
+    vEl.className = 'result-verdict warn';
+    chipEl.textContent = 'Toe-out';
+    chipEl.className = 'chip sampling';
+  }
+
+  // Spec bar
+  const clamped = Math.max(-range, Math.min(range, toe));
+  const np = ((clamped + range) / (range * 2)) * 100;
+  const sp = (WHEEL_SPEC / range / 2) * 100;
+  const zone = document.getElementById(`spec-zone-${side}`);
+  zone.style.left = (50 - sp) + '%';
+  zone.style.width = (sp * 2) + '%';
+  const needle = document.getElementById(`spec-needle-${side}`);
+  needle.style.left = np + '%';
+  needle.className = 'spec-needle ' + (inSpec ? 'good' : toein ? 'bad' : 'warn');
 }
 
 // ── Helpers ──
 function numEl(slot) {
   return document.getElementById({ vehicle: 'vehicle-num', left: 'left-num', right: 'right-num' }[slot]);
 }
-
 function chip(slot, cls, text) {
   const el = document.getElementById({ vehicle: 'chip-vehicle', left: 'chip-left', right: 'chip-right' }[slot]);
-  el.className = 'chip ' + cls;
-  el.textContent = text;
+  el.className = 'chip ' + cls; el.textContent = text;
 }
-
 function prog(slot, show) {
-  const el = document.getElementById({ vehicle: 'prog-vehicle', left: 'prog-left', right: 'prog-right' }[slot]);
-  el.className = 'progress-wrap' + (show ? ' show' : '');
+  document.getElementById({ vehicle: 'prog-vehicle', left: 'prog-left', right: 'prog-right' }[slot])
+    .className = 'progress-wrap' + (show ? ' show' : '');
 }
-
 function fillProg(slot, pct) {
   document.getElementById({ vehicle: 'pfill-vehicle', left: 'pfill-left', right: 'pfill-right' }[slot]).style.width = pct + '%';
   document.getElementById({ vehicle: 'ppct-vehicle',  left: 'ppct-left',  right: 'ppct-right'  }[slot]).textContent = pct + '%';
 }
-
 function lockBtns(off) {
   document.getElementById('btn-vehicle').disabled = off;
   if (st.vehicle !== null) {
@@ -786,6 +954,8 @@ function resetAll() {
   document.getElementById('btn-left').textContent = 'Capture Left Wheel';
   document.getElementById('btn-right').textContent = 'Capture Right Wheel';
   document.getElementById('result-card').classList.add('hidden');
+  document.getElementById('result-left-card').classList.add('hidden');
+  document.getElementById('result-right-card').classList.add('hidden');
   document.getElementById('step3-label').classList.add('hidden');
 }
 
