@@ -785,6 +785,15 @@ function angDelta(a, b) {
 function startCapture(slot) {
   if (st.locking) return;
   if (slot !== 'vehicle' && st.vehicle === null) { alert('Lock the vehicle heading first.'); return; }
+
+  // Warn if not level, but allow override
+  const notLevel = Math.abs(st.pitch) >= LEVEL_THRESH || Math.abs(st.roll) >= LEVEL_THRESH;
+  if (notLevel) {
+    const worst = Math.max(Math.abs(st.pitch), Math.abs(st.roll)).toFixed(1);
+    const go = confirm(`Phone is not level (${worst}° off).\n\nAn unlevel phone will reduce accuracy. Capture anyway?`);
+    if (!go) return;
+  }
+
   st.locking = slot;
   st.buf = [];
   chip(slot, 'sampling', 'Sampling…');
