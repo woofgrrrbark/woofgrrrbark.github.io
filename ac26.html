@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>parking_ac26.txt - Notepad</title>
+
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #008080;
+      font-family: 'Courier New', Courier, monospace;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 12px;
+    }
+
+    /* WINDOW */
+    .window {
+      width: 100%;
+      max-width: 680px;
+      display: flex;
+      flex-direction: column;
+      height: calc(100vh - 24px);
+      box-shadow: 4px 4px 0px #000;
+    }
+
+    /* TITLE BAR */
+    .titlebar {
+      background: #000080;
+      color: white;
+      font-family: 'Arial', sans-serif;
+      font-size: 13px;
+      font-weight: bold;
+      padding: 4px 6px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+      user-select: none;
+    }
+
+    .titlebar-left {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .titlebar-icon {
+      width: 16px;
+      height: 16px;
+      background: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      color: #000080;
+      font-weight: bold;
+      flex-shrink: 0;
+    }
+
+    .titlebar-buttons {
+      display: flex;
+      gap: 2px;
+    }
+
+    .tb-btn {
+      width: 18px;
+      height: 14px;
+      background: #c0c0c0;
+      border-top: 2px solid #fff;
+      border-left: 2px solid #fff;
+      border-right: 2px solid #404040;
+      border-bottom: 2px solid #404040;
+      font-size: 9px;
+      font-family: Arial, sans-serif;
+      font-weight: bold;
+      color: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: default;
+      line-height: 1;
+    }
+
+    /* MENU BAR */
+    .menubar {
+      background: #c0c0c0;
+      border-top: 1px solid #fff;
+      border-left: 1px solid #fff;
+      border-right: 1px solid #808080;
+      border-bottom: 1px solid #808080;
+      padding: 2px 4px;
+      display: flex;
+      gap: 0;
+      flex-shrink: 0;
+    }
+
+    .menu-item {
+      font-family: Arial, sans-serif;
+      font-size: 13px;
+      padding: 2px 8px;
+      cursor: default;
+      color: #000;
+    }
+
+    .menu-item:hover {
+      background: #000080;
+      color: white;
+    }
+
+    /* TEXT AREA WRAPPER */
+    .textarea-wrapper {
+      flex: 1;
+      overflow: hidden;
+      background: #c0c0c0;
+      border-top: 2px solid #808080;
+      border-left: 2px solid #808080;
+      border-right: 2px solid #fff;
+      border-bottom: 2px solid #fff;
+      display: flex;
+    }
+
+    .textarea-inner {
+      flex: 1;
+      overflow-y: auto;
+      background: white;
+      padding: 4px 6px;
+      /* custom scrollbar */
+    }
+
+    /* Scrollbar styling - Windows 95 style */
+    .textarea-inner::-webkit-scrollbar {
+      width: 17px;
+    }
+    .textarea-inner::-webkit-scrollbar-track {
+      background: #c0c0c0;
+    }
+    .textarea-inner::-webkit-scrollbar-thumb {
+      background: #c0c0c0;
+      border-top: 2px solid #fff;
+      border-left: 2px solid #fff;
+      border-right: 2px solid #808080;
+      border-bottom: 2px solid #808080;
+    }
+    .textarea-inner::-webkit-scrollbar-button {
+      background: #c0c0c0;
+      border-top: 2px solid #fff;
+      border-left: 2px solid #fff;
+      border-right: 2px solid #808080;
+      border-bottom: 2px solid #808080;
+      height: 17px;
+    }
+
+    /* TEXT CONTENT */
+    .content {
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 13px;
+      line-height: 1.5;
+      color: #000;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .content .heading {
+      font-weight: bold;
+      text-decoration: underline;
+    }
+
+    .content .tip {
+      /* no special color in notepad, just a marker */
+    }
+
+    /* STATUS BAR */
+    .statusbar {
+      background: #c0c0c0;
+      border-top: 1px solid #808080;
+      padding: 2px 6px;
+      font-family: Arial, sans-serif;
+      font-size: 11px;
+      color: #000;
+      flex-shrink: 0;
+      display: flex;
+      gap: 16px;
+    }
+
+    .status-item {
+      border-right: 1px solid #808080;
+      padding-right: 12px;
+    }
+
+    @media (max-width: 480px) {
+      body { padding: 0; background: #c0c0c0; }
+      .window {
+        height: 100vh;
+        max-width: 100%;
+        box-shadow: none;
+      }
+      .menu-item { font-size: 12px; padding: 2px 6px; }
+      .content { font-size: 12px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="window">
+
+  <!-- TITLE BAR -->
+  <div class="titlebar">
+    <div class="titlebar-left">
+      <div class="titlebar-icon">N</div>
+      parking_ac26.txt - Notepad
+    </div>
+    <div class="titlebar-buttons">
+      <div class="tb-btn">_</div>
+      <div class="tb-btn">□</div>
+      <div class="tb-btn">✕</div>
+    </div>
+  </div>
+
+  <!-- MENU BAR -->
+  <div class="menubar">
+    <div class="menu-item">File</div>
+    <div class="menu-item">Edit</div>
+    <div class="menu-item">Search</div>
+    <div class="menu-item">Help</div>
+  </div>
+
+  <!-- TEXT AREA -->
+  <div class="textarea-wrapper">
+    <div class="textarea-inner">
+      <div class="content">
+<span class="heading">AC 26 PARKING LOTS</span>
+<span class="heading">==================</span>
+
+<span class="heading">MY FAV: GRANT ST TRANSPORTATION CENTER</span>
+----------------------------------------
+- can be quite crowded during the day,
+  especially for the fursuit parade
+- owned by the city, 24h surveillance
+- best overall pricing
+- if you pull an all nighter at the
+  waterfront, theres a chance the gates
+  will just be open and you won't have
+  to pay at all. not guaranteed though
+
+Day rates (5a-3:59p):
+  &lt; 2h .............. $6
+  &lt; 4h .............. $8
+  &lt; 6h .............. $10
+  6-24h ............. $13
+
+Night/weekend rates (4p-4:59a):
+  flat .............. $6
+  weekends .......... $6/24h
+
+
+<span class="heading">RUNNER UP: ELEVENTH AND SMALLMAN</span>
+<span class="heading">         + 1201 WATERFRONT PLACE</span>
+----------------------------------------
+- both are even closer to DLCC than
+  the grant st garage
+- overpriced if parking overnight
+
+Rates:
+  &lt; 6h .............. $8
+  &lt; 12h ............. $12
+  &lt; 24h ............. $24
+
+
+<span class="heading">BEST FOR AFTERNOONS:</span>
+<span class="heading">MELLON SQUARE + SMITHFIELD+LIBERTY</span>
+----------------------------------------
+- both owned by the city, 24h surveillance
+- decent pricing during the day but not
+  the cheapest ($20/24h)
+
+Rates:
+  after 4pm-5:59am .. $8
+  all day Sat/Sun ... $8
+
+
+<span class="heading">BETTER BACKUP: THE PENNSYLVANIAN</span>
+<span class="heading">              LOWER LOT</span>
+----------------------------------------
+- no parking passes, plate based payment.
+  no lost ticket fees
+- can be confusing to get out of for some
+- might be packed some days, shared with
+  an office building
+
+Rates:
+  &lt; 2h .............. $6.49
+  &lt; 3h .............. $9.49
+  &lt; 12h ............. $15.49
+  weekends .......... $7.49
+
+
+<span class="heading">BACKUP: 1301 SMALLMAN ST</span>
+----------------------------------------
+- private lot, restricted hours
+- decent pricing but the hours suck
+- cant stress enough how bad the hours
+  are. use this for day trips only
+  unless you want your car locked in
+  there overnight
+
+Hours: M-F 6am-8pm
+       Sat 8am-8pm
+       Sun 8am-4pm
+
+Rates:
+  flat rate ......... $10
+
+
+<span class="heading">==================</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- STATUS BAR -->
+  <div class="statusbar">
+    <span class="status-item">Ln 1, Col 1</span>
+    <span>100%</span>
+  </div>
+
+</div>
+
+</body>
+</html>
