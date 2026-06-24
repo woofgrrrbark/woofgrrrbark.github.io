@@ -66,7 +66,7 @@
     background: var(--surface2); border: 1px solid var(--border);
     border-radius: 100px; padding: 5px 12px 5px 8px;
     font-family: var(--mono); font-size: 0.8rem; color: var(--text-2);
-    transition: all 0.3s;
+    transition: all 0.0s;
   }
   .live-pill.active { background: var(--success-light); border-color: var(--success-border); color: var(--success); }
   .live-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--text-3); flex-shrink: 0; transition: background 0.3s; }
@@ -271,7 +271,7 @@
   .spec-track { height: 8px; background: var(--surface2); border: 1px solid var(--border); border-radius: 100px; position: relative; }
   .spec-zone { position: absolute; top: -1px; height: calc(100% + 2px); background: var(--success-light); border: 1px solid var(--success-border); border-radius: 100px; }
   .spec-center { position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 1px; height: 100%; background: var(--border-strong); }
-  .spec-needle { position: absolute; top: 50%; transform: translate(-50%,-50%); width: 16px; height: 16px; border-radius: 50%; background: var(--surface); border: 2.5px solid var(--text); box-shadow: 0 1px 4px rgba(0,0,0,0.12); transition: left 0.4s cubic-bezier(0.34,1.4,0.64,1); }
+  .spec-needle { position: absolute; top: 50%; transform: translate(-50%,-50%); width: 16px; height: 16px; border-radius: 50%; background: var(--surface); border: 2.5px solid var(--text); box-shadow: 0 1px 4px rgba(0,0,0,0.12); transition: left 0.1s cubic-bezier(0.34,1.4,0.64,1); }
   .spec-needle.good { border-color: var(--success); }
   .spec-needle.bad  { border-color: var(--danger); }
   .spec-needle.warn { border-color: var(--warn); }
