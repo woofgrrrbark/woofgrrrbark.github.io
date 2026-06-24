@@ -350,11 +350,10 @@
 <body>
 
 <div id="perm-screen">
-  <div class="perm-icon">🧭</div>
-  <div class="perm-title">Toe Align</div>
-  <p class="perm-body">Uses your iPhone's compass and accelerometer to measure wheel toe angles. Works best on a level surface away from metal tools.</p>
-  <button class="perm-btn" onclick="requestPermission()">Allow Compass Access</button>
-  <p class="perm-note">Requires iPhone · Chrome recommended · iOS 13+</p>
+  <div class="perm-title">Alignment</div>
+  <p class="perm-body">Uses your iPhone's compass and accelerometer to measure wheel toe angles.</p>
+  <button class="perm-btn" onclick="requestPermission()">Allow Sensor Access</button>
+  <p class="perm-note">Requires iOS 13+, Chrome recommended; Measures within 0.2° total toe, 0.1° per wheel.</p>
 </div>
 
 <header class="app-header">
@@ -434,7 +433,7 @@
     </div>
     <div class="reading-block">
       <div class="reading-num empty" id="vehicle-num">Waiting</div>
-      <div class="reading-hint">Place phone on hood or roof aligned with the vehicle centerline</div>
+      <div class="reading-hint">Place phone on center console or roof and align with the vehicle's centerline.</div>
     </div>
     <div class="mini-level-row" id="mlevel-vehicle">
       <div class="mini-bubble-wrap">
@@ -609,14 +608,14 @@
   <button class="btn btn-ghost" onclick="resetAll()">Reset All Measurements</button>
 
   <div class="notice">
-    <strong>Tips for accuracy:</strong> Keep the phone away from speakers, motors, and loose metal. Magnetic interference from the vehicle is normal — the app uses relative differences, not absolute headings. Capture all three readings in the same session without moving the car.
+    <strong>Tips for accuracy:</strong> Magnetic interference from the vehicle is normal — readings are averaged over 50 collections. Capture all three readings in the same session without moving the car.
   </div>
 
 </div>
 
 <script>
 const SPEC = 0.20;
-const SAMPLES = 40;
+const SAMPLES = 50;
 const LEVEL_THRESH = 1.5; // degrees before warning
 
 const st = {
@@ -787,7 +786,7 @@ function startCapture(slot) {
   const notLevel = Math.abs(st.pitch) >= LEVEL_THRESH || Math.abs(st.roll) >= LEVEL_THRESH;
   if (notLevel) {
     const worst = Math.max(Math.abs(st.pitch), Math.abs(st.roll)).toFixed(1);
-    const go = confirm(`Phone is not level (${worst}° off).\n\nAn unlevel phone will reduce accuracy. Capture anyway?`);
+    const go = confirm(`Phone is not level (${worst}° off).\n\nAn unlevel phone could cause innacurate angle readings. Capture anyway?`);
     if (!go) return;
   }
 
